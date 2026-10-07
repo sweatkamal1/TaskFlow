@@ -1,7 +1,8 @@
-import express from "express"
+// import express from "express"
 import connetDB from "./config/db.js"
+import app from "./app.js"
 
-const app = express();
+// const app = express();
 
 const PORT = 3000
 

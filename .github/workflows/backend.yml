@@ -9,6 +9,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   backend-ci:
 
@@ -33,6 +37,16 @@ jobs:
         working-directory: TaskFlow_backend
         run: npm test
 
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
         working-directory: TaskFlow_backend
-        run: docker build -t taskflow_backend .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/taskflow-backend:latest .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/taskflow-backend:latest
